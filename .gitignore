@@ -1,2 +1,5 @@
 *.pyc
 .idea
+.settings
+.project
+target
