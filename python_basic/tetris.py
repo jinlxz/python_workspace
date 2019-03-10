@@ -282,7 +282,7 @@ class Board(QFrame):
         self.curPiece.setRandomShape()
         ## axis origin is at the left-bottom corner.
         self.curX = Board.BoardWidth // 2 + 1
-        self.curY = Board.BoardHeight -1 - self.curPiece.maxY()*4
+        self.curY = Board.BoardHeight -20 - self.curPiece.maxY()*4
 
         if not self.tryMove(self.curPiece, self.curX, self.curY):
             self.curPiece.setShape(Tetrominoe.NoShape)
@@ -294,14 +294,36 @@ class Board(QFrame):
         '''tries to move a shape'''
         for i in range(4):
             # reverse the y axis.
-            x = newX + newPiece.x(i)*4
-            y = newY + newPiece.y(i)*4
-            if x < 0 or x >= Board.BoardWidth or y < 0 or y >= Board.BoardHeight:
-                return False
-
-            if self.shapeAt(x, y) != Tetrominoe.NoShape:
-                return False
-
+            if newPiece.x(i)>=0 and newPiece.y(i)>=0:
+                x = newX + newPiece.x(i)*4+4
+                y = newY + newPiece.y(i)*4+4
+                if x < 0 or x >= Board.BoardWidth or y < 0 or y >= Board.BoardHeight:
+                    return False
+                if self.shapeAt(x, y) != Tetrominoe.NoShape:
+                    return False
+            elif newPiece.x(i)<=0 and newPiece.y(i)>=0:
+                x = newX + newPiece.x(i) * 4
+                y = newY + newPiece.y(i) * 4 + 4
+                if x < 0 or x >= Board.BoardWidth or y < 0 or y >= Board.BoardHeight:
+                    return False
+                if self.shapeAt(x, y) != Tetrominoe.NoShape:
+                    return False
+            elif newPiece.x(i)>=0 and newPiece.y(i)<=0:
+                x = newX + newPiece.x(i) * 4 +4
+                y = newY + newPiece.y(i) * 4
+                if x < 0 or x >= Board.BoardWidth or y < 0 or y >= Board.BoardHeight:
+                    return False
+                if self.shapeAt(x, y) != Tetrominoe.NoShape:
+                    return False
+            elif newPiece.x(i)<0 and newPiece.y(i)<0:
+                x = newX + newPiece.x(i) * 4
+                y = newY + newPiece.y(i) * 4
+                if x < 0 or x >= Board.BoardWidth or y < 0 or y >= Board.BoardHeight:
+                    return False
+                if self.shapeAt(x, y) != Tetrominoe.NoShape:
+                    return False
+            else:
+                raise Exception("error")
         self.curPiece = newPiece
         self.curX = newX
         self.curY = newY
