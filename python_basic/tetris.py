@@ -151,9 +151,9 @@ class Board(QFrame):
         if self.curPiece.shape() != Tetrominoe.NoShape and shape != Tetrominoe.OccupyShape:
             for i in range(4):
                 x = self.curX + self.curPiece.x(i)*4
-                y = self.curY + self.curPiece.y(i)*4
+                y = self.curY + self.curPiece.y(i)*4 + 4
                 self.drawSquare(painter, rect.left() + x * self.smallSquareWidth(),
-                                boardTop + (Board.BoardHeight - y - 1) * self.smallSquareHeight(),
+                                boardTop + (Board.BoardHeight - y) * self.smallSquareHeight(),
                                 self.curPiece.shape())
 
     def keyPressEvent(self, event):
@@ -282,7 +282,7 @@ class Board(QFrame):
         self.curPiece.setRandomShape()
         ## axis origin is at the left-bottom corner.
         self.curX = Board.BoardWidth // 2 + 1
-        self.curY = Board.BoardHeight -20 - self.curPiece.maxY()*4
+        self.curY = Board.BoardHeight - self.curPiece.maxY()*4-4
 
         if not self.tryMove(self.curPiece, self.curX, self.curY):
             self.curPiece.setShape(Tetrominoe.NoShape)
