@@ -148,12 +148,12 @@ class Board(QFrame):
                                     rect.left() + j * self.smallSquareWidth(),
                                     boardTop + i * self.smallSquareHeight(), shape)
         #drop current shape.
-        if self.curPiece.shape() != Tetrominoe.NoShape and shape != Tetrominoe.OccupyShape:
+        if self.curPiece.shape() != Tetrominoe.NoShape: #and shape != Tetrominoe.OccupyShape:
             for i in range(4):
                 x = self.curX + self.curPiece.x(i)*4
-                y = self.curY + self.curPiece.y(i)*4 + 4
+                y = self.curY + self.curPiece.y(i)*4 + 3
                 self.drawSquare(painter, rect.left() + x * self.smallSquareWidth(),
-                                boardTop + (Board.BoardHeight - y) * self.smallSquareHeight(),
+                                boardTop + (Board.BoardHeight -1 - y) * self.smallSquareHeight(),
                                 self.curPiece.shape())
 
     def keyPressEvent(self, event):
@@ -240,7 +240,7 @@ class Board(QFrame):
                     else:
                         self.setShapeAt(ax,ay,8)
 
-        self.print_board()
+        #self.print_board()
         self.removeFullLines()
 
         if not self.isWaitingAfterLine:
@@ -294,12 +294,12 @@ class Board(QFrame):
         '''tries to move a shape'''
         for i in range(4):
             # reverse the y axis.
-            x = newX + newPiece.x(i)*4+4
-            x1 = newX + newPiece.x(i) * 4
+            x1 = newX + newPiece.x(i)*4+4
+            x = newX + newPiece.x(i) * 4
             y = newY + newPiece.y(i)*4
-            if x < 0 or x >= Board.BoardWidth or y < 0 or y >= Board.BoardHeight:
+            if x <0 or x1 >Board.BoardWidth or y < 0 or y >= Board.BoardHeight:
                 return False
-            if self.shapeAt(x, y) != Tetrominoe.NoShape or self.shapeAt(x1,y)!=Tetrominoe.NoShape:
+            if self.shapeAt(x, y) != Tetrominoe.NoShape or self.shapeAt(x1-1,y)!=Tetrominoe.NoShape:
                 return False
         self.curPiece = newPiece
         self.curX = newX
